@@ -85,30 +85,6 @@ class Placeua:
         logger.info('ending session')
         self.driver.quit()
 
-    def ubrat_obyavlenie(self):
-        logger.info('ubrat_obyavlenie')
-        self.driver.get('https://place.ua/cabinet/items?status=1&page=1&pp=-1')
-        type_checkbox_xpath = '//*[@type="checkbox"]'
-        try:
-            self.driver.find_element_by_xpath(type_checkbox_xpath).click()
-        except NoSuchElementException as error:
-            logger.warning(error)
-            return False
-        title_xpath = '//*[@class="j-sel-title"]'
-        WebDriverWait(self.driver, 3).until(EC.presence_of_element_located((By.XPATH, title_xpath))).click()
-        select_ = '//*[@class="j-mass-select"]'
-        WebDriverWait(self.driver, 3).until(EC.presence_of_element_located((By.XPATH, select_))).click()
-        self.driver.find_element_by_class_name('j-sel-action').click()
-        self.driver.get('https://place.ua/cabinet/items?status=3&page=1&pp=-1')
-        self.driver.find_element_by_xpath(type_checkbox_xpath).click()
-        WebDriverWait(self.driver, 3).until(EC.presence_of_element_located((By.XPATH, title_xpath))).click()
-        WebDriverWait(self.driver, 3).until(EC.presence_of_element_located((By.XPATH, select_))).click()
-        mass_delete = '//li[2]/a[@data-act="mass-delete"]'
-        self.driver.find_element_by_xpath(mass_delete).click()
-        self.driver.switch_to.alert.accept()
-        self.driver.refresh()
-        logger.info('Vacancies deleted')
-
 
 def main():
     df = pd.read_csv('https://docs.google.com/spreadsheets/d/1zaxjdu9ESYy2MCNuDow0_5PnZpwEsyrdTQ_kk0PMZbw/'
